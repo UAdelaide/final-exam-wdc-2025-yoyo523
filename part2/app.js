@@ -14,7 +14,7 @@ let db;
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'your_database_name'
+      database: 'DogWalkService'
     });
     console.log('MySQL connected');
   } catch (err) {
