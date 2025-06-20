@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-router.post('/login', async (req,res)=>{const { username, password } = req.body})
+router.post('/login', async (req,res)=>{const { username, password } = req.body;})
 
 // GET all users (for admin/testing)
 router.get('/', async (req, res) => {
