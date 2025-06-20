@@ -12,31 +12,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const [rows] = await db.execute(
-      'SELECT * FROM users WHERE username = ? AND password_hash = ?',
-      [username, password]
-    );
-
-    if (rows.length === 1) {
-      req.session.user = rows[0];
-      if (rows[0].role === 'owner') {
-        return res.redirect('/owner-dashboard.html');
-      } else if (rows[0].role === 'walker') {
-        return res.redirect('/walker-dashboard.html');
-      }
-    } else {
-      res.send('Invalid username or password');
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
-
 // POST a new user (simple signup)
 router.post('/register', async (req, res) => {
   const { username, email, password, role } = req.body;
