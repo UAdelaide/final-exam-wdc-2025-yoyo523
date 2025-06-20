@@ -67,10 +67,10 @@ app.get('/api/walkers/summary', async (req, res) => {
         Users.username AS walker_username,
         COUNT(ratings.rating_id) AS total_ratings,
         ROUND(AVG(ratings.score), 1) AS average_rating,
-        COUNT(DISTINCT walk_assignments.assignment_id) AS completed_walks
+        COUNT(DISTINCT Walk.assignment_id) AS completed_walks
       FROM Users
-      LEFT JOIN walk_assignments ON Users.user_id = walk_assignments.walker_id
-      LEFT JOIN ratings ON walk_assignments.assignment_id = ratings.walk_assignment_id
+      LEFT JOIN Walk ON Users.user_id = Walk.walker_id
+      LEFT JOIN ratings ON Walk.assignment_id = ratings.walk_assignment_id
       WHERE Users.role = 'walker'
       GROUP BY Users.username
     `);
