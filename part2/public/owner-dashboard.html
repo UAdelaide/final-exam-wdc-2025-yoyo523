@@ -86,6 +86,15 @@
             error.value = 'Failed to load walk requests';
           }
         }
+        async function loadMyDogs() {
+  try {
+    const res = await fetch('/api/mydogs');
+    const data = await res.json();
+    myDogs.value = data;
+  } catch (err) {
+    error.value = 'Failed to load your dogs';
+  }
+}
 
         async function submitWalkRequest() {
           try {
