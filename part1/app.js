@@ -82,7 +82,9 @@ app.get('/api/walkers/summary', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch walker summary' });
     }
   });
+
   app.use(express.static('public'));
+
 app.listen(8080, () => {
   console.log('Server running on http://localhost:8080');
 });
