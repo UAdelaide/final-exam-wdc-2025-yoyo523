@@ -82,21 +82,20 @@ app.post('/logout', (req, res) => {
 
 // === API: Get current owner's dogs ===
 app.get('/api/mydogs', async (req, res) => {
-  if (!req.session.user || req.session.user.role !== 'owner') {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+    if (!req.session.user || req.session.user.role !== 'owner') {
+      return res.status(401).json({ error: 'Unauthorized: Not logged in as owner' });
+    }
 
-  try {
-    const ownerId = req.session.user.id;
-    const [rows] = await db.execute(
-      'SELECT id, name FROM dogs WHERE owner_id = ?',
-      [ownerId]
-    );
-    res.json(rows);
-  } catch (err) {
-    console.error('Failed to fetch dogs:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
+    try {
+      const ownerId = req.session.user.id;
+      const [rows] = await db.execute(
+        'SELECT id, name FROM dogs WHERE owner_id = ?',
+        [ownerId]
+      );
+      res.json(rows);
+    } catch (err) {
+      console.error('Failed to load dogs:', err);
+      res.status(500).json({ error: 'Failed to load dogs' });
+    }
+  });
 module.exports = app;
