@@ -116,8 +116,10 @@
   }
 }
 
-        onMounted(() => { loadWalks(); });
-
+onMounted(() => {
+  loadWalks();
+  loadMyDogs();
+});
         return { form, walks, message, error, submitWalkRequest };
       }
     }).mount('#app');
