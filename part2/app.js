@@ -15,6 +15,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false
   }));
+
+
+app.use('/', userRoutes);
+app.use('/api', walkRoutes);
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
