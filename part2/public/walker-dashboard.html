@@ -11,6 +11,11 @@
   <div id="app" class="container py-4">
     <h1 class="mb-4 text-success">Walker Dashboard</h1>
 
+    <!-- Logout form -->
+    <form action="/logout" method="POST" class="mb-4">
+      <button type="submit" class="btn btn-outline-danger">Log Out</button>
+    </form>
+
     <!-- Alert messages -->
     <div v-if="message" class="alert alert-info">{{ message }}</div>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
@@ -74,16 +79,9 @@
           }
         }
 
-        onMounted(() => {
-          loadWalkRequests();
-        });
+        onMounted(() => { loadWalkRequests(); });
 
-        return {
-          walks,
-          message,
-          error,
-          applyToWalk
-        };
+        return { walks, message, error, applyToWalk };
       }
     }).mount('#app');
   </script>
