@@ -8,7 +8,6 @@ let db;
 
 (async () => {
   try {
-    // 连接数据库（确保已创建数据库 DogWalkService）
     db = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
@@ -22,7 +21,6 @@ let db;
   }
 })();
 
-// /api/dogs 路由
 app.get('/api/dogs', async (req, res) => {
   try {
     const [rows] = await db.execute(`
