@@ -1,9 +1,14 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const userRoutes = require('./routes/userRoutes');
+const walkRoutes = require('./routes/walkRoutes');
 require('dotenv').config();
 
 const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware
 app.use(express.json());
