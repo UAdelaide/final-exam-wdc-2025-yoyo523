@@ -10,6 +10,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    secret: 'dog-walk-secret',
+    resave: false,
+    saveUninitialized: false
+  }));
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/public')));
