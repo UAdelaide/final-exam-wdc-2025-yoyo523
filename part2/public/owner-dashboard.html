@@ -77,6 +77,7 @@
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
+        const myDogs = ref([]); // ✅ ← ← ← ← 添加这行
 
         async function loadWalks() {
           try {
@@ -86,15 +87,16 @@
             error.value = 'Failed to load walk requests';
           }
         }
+
         async function loadMyDogs() {
-  try {
-    const res = await fetch('/api/mydogs');
-    const data = await res.json();
-    myDogs.value = data;
-  } catch (err) {
-    error.value = 'Failed to load your dogs';
-  }
-}
+          try {
+            const res = await fetch('/api/mydogs');
+            const data = await res.json();
+            myDogs.value = data;
+          } catch (err) {
+            error.value = 'Failed to load your dogs';
+          }
+        }
 
         async function submitWalkRequest() {
           try {
@@ -116,9 +118,12 @@
           }
         }
 
-        onMounted(() => { loadWalks(); });
+        onMounted(() => {
+          loadWalks();
+          loadMyDogs(); // ✅ 记得挂载时加载狗狗列表
+        });
 
-        return { form, walks, message, error, submitWalkRequest };
+        return { form, walks, message, error, myDogs, submitWalkRequest };
       }
     }).mount('#app');
   </script>
