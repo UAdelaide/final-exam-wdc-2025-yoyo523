@@ -22,20 +22,21 @@ let db;
 })();
 
 app.get('/api/dogs', async (req, res) => {
-  try {
-    const [rows] = await db.execute(`
-      SELECT
-        dogs.name AS dog_name,
-        dogs.size,
-        users.username AS owner_username
-      FROM dogs
-      JOIN users ON dogs.owner_id = users.user_id
-    `);
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch dogs' });
-  }
-});
+    try {
+      const [rows] = await db.execute(`
+        SELECT
+          dogs.name AS dog_name,
+          dogs.size,
+          users.name AS owner_username
+        FROM dogs
+        JOIN users ON dogs.owner_id = users.user_id
+      `);
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to fetch dogs' });
+    }
+  });
 
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
