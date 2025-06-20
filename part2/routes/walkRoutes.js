@@ -2,22 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
 
-// GET all walk requests (for walkers to view)
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT wr.*, d.name AS dog_name, d.size, u.username AS owner_name
-      FROM WalkRequests wr
-      JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-      WHERE wr.status = 'open'
-    `);
-    res.json(rows);
-  } catch (error) {
-    console.error('SQL Error:', error);
-    res.status(500).json({ error: 'Failed to fetch walk requests' });
-  }
-});
+/**
+ * GET /api/walkrequests/open
+ * Return all open walk requests with dog and owner info
+ */
 router.get('/open', async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -35,7 +23,30 @@ router.get('/open', async (req, res) => {
   }
 });
 
-// POST a new walk request (from owner)
+/**
+ * GET /api/
+ * Return all open walk requests (basic default version for testing)
+ */
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT wr.*, d.name AS dog_name, d.size, u.username AS owner_name
+      FROM WalkRequests wr
+      JOIN Dogs d ON wr.dog_id = d.dog_id
+      JOIN Users u ON d.owner_id = u.user_id
+      WHERE wr.status = 'open'
+    `);
+    res.json(rows);
+  } catch (error) {
+    console.error('SQL Error:', error);
+    res.status(500).json({ error: 'Failed to fetch walk requests' });
+  }
+});
+
+/**
+ * POST /api/
+ * Create a new walk request from owner
+ */
 router.post('/', async (req, res) => {
   const { dog_id, requested_time, duration_minutes, location } = req.body;
 
@@ -51,7 +62,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// POST an application to walk a dog (from walker)
+/**
+ * POST /api/:id/apply
+ * Walker applies for a walk request and it gets marked as accepted
+ */
 router.post('/:id/apply', async (req, res) => {
   const requestId = req.params.id;
   const { walker_id } = req.body;
