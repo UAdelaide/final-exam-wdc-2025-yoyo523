@@ -64,25 +64,24 @@ app.get('/api/WalkRequests/open', async (req, res) => {
 
 // GET /api/walkers/summary
 app.get('/api/walkers/summary', async (req, res) => {
-  try {
-    const [rows] = await db.execute(`
-      SELECT
-        Users.username AS walker_username,
-        COUNT(WalkRatings.rating_id) AS total_ratings,
-        ROUND(AVG(WalkRatings.score), 1) AS average_rating,
-        COUNT(DISTINCT WalkAssignments.assignment_id) AS completed_walks
-      FROM Users
-      LEFT JOIN WalkAssignments ON Users.user_id = WalkAssignments.walker_id
-      LEFT JOIN WalkRatings ON WalkAssignments.assignment_id = WalkRatings.walk_assignment_id
-      WHERE Users.role = 'walker'
-      GROUP BY Users.username
-    `);
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch walker summary' });
-  }
-});
+    try {
+      const [rows] = await db.execute(`
+        SELECT
+          Users.username AS walker_username,
+          COUNT(WalkRatings.rating_id) AS total_ratings,
+          ROUND(AVG(WalkRatings.rating), 1) AS average_rating,
+          COUNT(DISTINCT WalkRatings.request_id) AS completed_walks
+        FROM Users
+        LEFT JOIN WalkRatings ON Users.user_id = WalkRatings.walker_id
+        WHERE Users.role = 'walker'
+        GROUP BY Users.username
+      `);
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to fetch walker summary' });
+    }
+  });
 
 app.listen(8080, () => {
   console.log('Server running on http://localhost:8080');
