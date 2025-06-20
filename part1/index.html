@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dog of the Day</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <style>
+    body {
+      background-color: #ff00ff;
+      color: yellow;
+      font-family: Comic Sans MS, cursive;
+      text-align: center;
+      animation: flicker 1s infinite;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    img {
+      border: 10px dashed lime;
+      width: 80%;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>DOG OF THE DAY!!! 🐶🎉</h1>
+
+    <img :src="dogImage" alt="" />
+
+    <p style="font-size: 28px;">
+      Name: <span style="text-decoration: underline;">Sniffles</span><br>
+      Breed: ???<br>
+      Mood: Excited!
+    </p>
+
+    <button @click="loadImage">Get Another Dog!</button>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ""
+        }
+      },
+      methods: {
+        async loadImage() {
+          try {
+            const res = await fetch('https://dog.ceo/api/breeds/image/random');
+            const data = await res.json();
+            this.dogImage = data.message;
+          } catch (err) {
+            this.dogImage = '';
+            alert("Failed to load dog.");
+          }
+        }
+      },
+      mounted() {
+        this.loadImage();
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
