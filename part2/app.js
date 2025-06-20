@@ -8,9 +8,9 @@ const walkRoutes = require('./routes/walkRoutes');
 
 const app = express();
 
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -19,11 +19,8 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// Main routes
+// Routes
 app.use('/', userRoutes);
 app.use('/api', walkRoutes);
 
-// Start server
-app.listen(8080, () => {
-  console.log('Server running on http://localhost:8080');
-});
+module.exports = app;
