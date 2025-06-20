@@ -44,10 +44,10 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const [rows] = await db.execute(
-      'SELECT * FROM users WHERE username = ? AND password_hash = ?',
-      [username, password]
-    );
+const [rows] = await db.execute(
+    'SELECT * FROM Users WHERE username = ? AND password_hash = ?',
+    [username, password]
+  );
 
     if (rows.length === 1) {
       req.session.user = rows[0];
