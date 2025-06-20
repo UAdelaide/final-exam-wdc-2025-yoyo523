@@ -37,7 +37,6 @@ app.get('/api/dogs', async (req, res) => {
   }
 });
 
-// /api/walkrequests/open 路由
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
     const [rows] = await db.execute(`
