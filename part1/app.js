@@ -27,9 +27,9 @@ app.get('/api/Dogs', async (req, res) => {
         SELECT
           Dogs.name AS dog_name,
           Dogs.size,
-          users.name AS owner_username
+          Users.name AS owner_username
         FROM Dogs
-        JOIN users ON Dogs.owner_id = users.user_id
+        JOIN Users ON Dogs.owner_id = Users.user_id
       `);
       res.json(rows);
     } catch (err) {
@@ -47,10 +47,10 @@ app.get('/api/walkrequests/open', async (req, res) => {
         walk_requests.requested_time,
         walk_requests.duration_minutes,
         walk_requests.location,
-        users.username AS owner_username
+        Users.username AS owner_username
       FROM walk_requests
       JOIN Dogs ON walk_requests.dog_id = Dogs.dog_id
-      JOIN users ON Dogs.owner_id = users.user_id
+      JOIN Users ON Dogs.owner_id = Users.user_id
       WHERE walk_requests.status = 'open'
     `);
     res.json(rows);
@@ -64,15 +64,15 @@ app.get('/api/walkers/summary', async (req, res) => {
   try {
     const [rows] = await db.execute(`
       SELECT
-        users.username AS walker_username,
+        Users.username AS walker_username,
         COUNT(ratings.rating_id) AS total_ratings,
         ROUND(AVG(ratings.score), 1) AS average_rating,
         COUNT(DISTINCT walk_assignments.assignment_id) AS completed_walks
-      FROM users
-      LEFT JOIN walk_assignments ON users.user_id = walk_assignments.walker_id
+      FROM Users
+      LEFT JOIN walk_assignments ON Users.user_id = walk_assignments.walker_id
       LEFT JOIN ratings ON walk_assignments.assignment_id = ratings.walk_assignment_id
-      WHERE users.role = 'walker'
-      GROUP BY users.username
+      WHERE Users.role = 'walker'
+      GROUP BY Users.username
     `);
     res.json(rows);
   } catch (err) {
