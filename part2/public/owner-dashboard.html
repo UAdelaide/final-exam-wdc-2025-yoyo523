@@ -107,6 +107,14 @@
             message.value = '';
           }
         }
+        async function loadMyDogs() {
+  try {
+    const res = await fetch('/api/mydogs');
+    myDogs.value = await res.json();
+  } catch (err) {
+    error.value = 'Failed to load dog list';
+  }
+}
 
         onMounted(() => { loadWalks(); });
 
