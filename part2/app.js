@@ -14,7 +14,7 @@ let db;
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'your_database_name' // ← 替换为你的实际数据库名
+      database: 'your_database_name'
     });
     console.log('MySQL connected');
   } catch (err) {
