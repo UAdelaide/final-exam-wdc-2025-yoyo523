@@ -5,6 +5,7 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 const app = express();
+const axios = require('axios');
 
 // === MySQL database connection ===
 let db;
