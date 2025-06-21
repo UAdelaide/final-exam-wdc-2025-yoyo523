@@ -98,13 +98,32 @@ app.get('/api/mydogs', async (req, res) => {
       res.status(500).json({ error: 'Failed to load dogs' });
     }
   });
-  app.get('/api/dogs', async (req, res) => {
+  app.get('/api/Dogs', async (req, res) => {
     try {
-      const [rows] = await db.execute('SELECT dog_id, name, size, owner_id, photo_url FROM Dogs');
-      res.json(rows);
+      const [rows] = await db.execute(`
+        SELECT
+          Dogs.name AS dog_name,
+          Dogs.size,
+          Users.username AS owner_username
+        FROM Dogs
+        JOIN Users ON Dogs.owner_id = Users.user_id
+      `);
+
+      // 为每只狗加一张随机图
+      const dogsWithPhotos = await Promise.all(rows.map(async (dog) => {
+        try {
+          const response = await axios.get('https://dog.ceo/api/breeds/image/random');
+          dog.photo_url = response.data.message;
+        } catch {
+          dog.photo_url = ''; // fallback
+        }
+        return dog;
+      }));
+
+      res.json(dogsWithPhotos);
     } catch (err) {
-      console.error('Failed to load all dogs:', err);
-      res.status(500).json({ error: 'Failed to load dogs' });
+      console.error(err);
+      res.status(500).json({ error: 'Failed to fetch Dogs' });
     }
   });
 module.exports = app;
