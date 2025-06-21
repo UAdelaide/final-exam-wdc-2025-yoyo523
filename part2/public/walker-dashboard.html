@@ -62,10 +62,10 @@
 
         async function loadWalkRequests() {
           try {
-        const res = await fetch('/api/walks/open');  // ← ← ← 修改这里
-    if (!res.ok) throw new Error('Failed to load walk requests');
-    walks.value = await res.json();
-  } catch (err) {
+              const res = await fetch('/api/walks/open');  // ← ← ← 修改这里
+              if (!res.ok) throw new Error('Failed to load walk requests');
+              walks.value = await res.json();
+              } catch (err) {
     error.value = err.message;
   }
 }
