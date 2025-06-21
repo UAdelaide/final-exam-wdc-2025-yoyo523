@@ -88,8 +88,14 @@ router.post('/:id/apply', async (req, res) => {
     res.status(500).json({ error: 'Failed to apply for walk' });
   }
 });
-
 router.get('/walks', async (req, res) => {
+  // ✅ 检查是否已登录，且是 owner 身份
+  if (!req.session.user || req.session.user.role !== 'owner') {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+
+  const ownerId = req.session.user.user_id;
+
   try {
     const [rows] = await db.query(`
       SELECT wr.request_id, d.name AS dog_name, d.size, wr.requested_time,
@@ -97,8 +103,10 @@ router.get('/walks', async (req, res) => {
       FROM WalkRequests wr
       JOIN Dogs d ON wr.dog_id = d.dog_id
       JOIN Users u ON d.owner_id = u.user_id
+      WHERE d.owner_id = ?        -- ✅ 只查当前用户的狗
       ORDER BY wr.requested_time DESC
-    `);
+    `, [ownerId]);
+
     res.json(rows);
   } catch (error) {
     console.error('SQL Error:', error);
