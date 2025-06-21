@@ -99,7 +99,7 @@ app.get('/api/mydogs', async (req, res) => {
       res.status(500).json({ error: 'Failed to load dogs' });
     }
   });
-  app.get('/api/Dogs', async (req, res) => {
+  app.get('/api/dogs', async (req, res) => {
     try {
       const [rows] = await db.execute(`
         SELECT
