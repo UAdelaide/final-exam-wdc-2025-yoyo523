@@ -38,6 +38,7 @@ app.get('/api/Dogs', async (req, res) => {
         dog.photo_url = response.data.message;
       } catch {
         dog.photo_url = '';
+      }
       return dog;
     }));
 
