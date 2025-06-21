@@ -67,9 +67,9 @@ router.post('/', async (req, res) => {
     `, [dog_id, requested_time, duration_minutes, location]);
 
     res.status(201).json({ message: 'Walk request created', request_id: result.insertId });
-  } catch (error) {
-    console.error('🔥 SQL 插入错误:', error);  // 关键日志
-    res.status(500).json({ error: 'Failed to create walk request' });
+  }  catch (err) {
+    console.error('Error loading walk requests:', err);
+    res.status(500).json({ error: 'Failed to load walk requests' });
   }
 });
 
