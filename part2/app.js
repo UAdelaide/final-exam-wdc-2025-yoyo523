@@ -103,11 +103,11 @@ app.get('/api/mydogs', async (req, res) => {
     try {
       const [rows] = await db.execute(`
         SELECT
-          Dogs.name AS dog_name,
+          Dogs.dog_id,
+          Dogs.name,
           Dogs.size,
-          Users.username AS owner_username
+          Dogs.owner_id
         FROM Dogs
-        JOIN Users ON Dogs.owner_id = Users.user_id
       `);
 
       // 为每只狗加一张随机图
