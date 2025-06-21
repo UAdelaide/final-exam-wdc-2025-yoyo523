@@ -49,8 +49,9 @@
         const message = ref('');
         const error = ref('');
         const user = ref(null);
-async function getCurrentUser() {
-  try {
+
+      async function getCurrentUser() {
+        try {
     const res = await fetch('/api/users/me');
     const data = await res.json();
     user.value = data;
