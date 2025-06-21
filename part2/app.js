@@ -87,7 +87,7 @@ app.get('/api/mydogs', async (req, res) => {
     }
 
     try {
-      const ownerId = req.session.user.id;
+        const ownerId = req.session.user.user_id;
       const [rows] = await db.execute(
         'SELECT id, name FROM dogs WHERE owner_id = ?',
         [ownerId]
