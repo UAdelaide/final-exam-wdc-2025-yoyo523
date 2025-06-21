@@ -22,26 +22,6 @@ router.get('/open', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch walk requests' });
   }
 });
-
-/**
- * POST /api/
- * Create a new walk request from owner
- */
-router.post('/', async (req, res) => {
-  const { dog_id, requested_time, duration_minutes, location } = req.body;
-
-  try {
-    const [result] = await db.query(`
-      INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location)
-      VALUES (?, ?, ?, ?)
-    `, [dog_id, requested_time, duration_minutes, location]);
-
-    res.status(201).json({ message: 'Walk request created', request_id: result.insertId });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create walk request' });
-  }
-});
-
 /**
  * POST /api/:id/apply
  * Walker applies for a walk request and it gets marked as accepted
