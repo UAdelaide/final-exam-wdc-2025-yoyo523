@@ -72,29 +72,6 @@ router.post('/:id/apply', async (req, res) => {
  * GET /api/
  * Return all open walk requests (basic default version for testing)
  */
-router.get('/', async (req, res) => {
-  if (!req.session.user || req.session.user.role !== 'owner') {
-    return res.status(403).json({ error: 'Unauthorized' });
-  }
-
-  const ownerId = req.session.user.user_id;
-
-  try {
-    const [rows] = await db.query(`
-      SELECT wr.request_id, d.name AS dog_name, d.size, wr.requested_time,
-             wr.duration_minutes, wr.location, wr.status, u.username AS owner_name
-      FROM WalkRequests wr
-      JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-      WHERE d.owner_id = ?
-      ORDER BY wr.requested_time DESC
-    `, [ownerId]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error('Error creating walk request:', err);
-    res.status(500).json({ error: 'Failed to create walk request' });
-  }
-});
+c
 
 module.exports = router;
