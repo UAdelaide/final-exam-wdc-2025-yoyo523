@@ -25,7 +25,7 @@ let db;
 
 // === Middleware ===
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // 允许表单提交
+app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: 'my-secret-key',
   resave: false,
@@ -115,7 +115,7 @@ app.get('/api/mydogs', async (req, res) => {
           const response = await axios.get('https://dog.ceo/api/breeds/image/random');
           dog.photo_url = response.data.message;
         } catch {
-          dog.photo_url = ''; // fallback
+          dog.photo_url = '';
         }
         return dog;
       }));
