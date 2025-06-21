@@ -24,12 +24,6 @@ router.get('/open', async (req, res) => {
 });
 
 /**
- * GET /api/
- * Return all open walk requests (basic default version for testing)
- */
-
-
-/**
  * POST /api/
  * Create a new walk request from owner
  */
@@ -74,6 +68,10 @@ router.post('/:id/apply', async (req, res) => {
     res.status(500).json({ error: 'Failed to apply for walk' });
   }
 });
+/**
+ * GET /api/
+ * Return all open walk requests (basic default version for testing)
+ */
 router.get('/', async (req, res) => {
   if (!req.session.user || req.session.user.role !== 'owner') {
     return res.status(403).json({ error: 'Unauthorized' });
