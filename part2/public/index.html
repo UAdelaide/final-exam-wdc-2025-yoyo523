@@ -25,15 +25,54 @@
 
       <button type="submit" class="btn btn-primary w-100">Log In</button>
     </form>
+
+    <!-- ✅ 展示所有狗狗信息 -->
+    <div class="mt-5">
+      <h3>All Registered Dogs</h3>
+      <table class="table table-bordered mt-3">
+        <thead class="table-light">
+          <tr>
+            <th>Dog ID</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Owner ID</th>
+            <th>Photo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="dog in dogs" :key="dog.dog_id">
+            <td>{{ dog.dog_id }}</td>
+            <td>{{ dog.name }}</td>
+            <td>{{ dog.size }}</td>
+            <td>{{ dog.owner_id }}</td>
+            <td>
+              <img v-if="dog.photo_url" :src="dog.photo_url" alt="Dog Photo" style="max-height: 100px;">
+              <span v-else>No photo</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
     const { createApp } = Vue;
+
     createApp({
       data() {
         return {
-          message: 'Welcome to the Dog Walking Service!'
+          dogs: []
         };
+      },
+      mounted() {
+        fetch('/api/dogs')
+          .then(res => res.json())
+          .then(data => {
+            this.dogs = data;
+          })
+          .catch(err => {
+            console.error('Failed to load dogs:', err);
+          });
       }
     }).mount('#app');
   </script>
