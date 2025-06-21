@@ -92,7 +92,7 @@ router.get('/', async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error('🔥 Error creating walk request:', err);
+    console.error('Error creating walk request:', err);
     res.status(500).json({ error: 'Failed to create walk request' });
   }
 });
