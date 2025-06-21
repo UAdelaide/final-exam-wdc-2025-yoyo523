@@ -72,28 +72,24 @@ router.post('/:id/apply', async (req, res) => {
  * GET /api/
  * Return all open walk requests (basic default version for testing)
  */
-router.get('/', async (req, res) => {
-  if (!req.session.user || req.session.user.role !== 'owner') {
-    return res.status(403).json({ error: 'Unauthorized' });
+router.post('/', async (req, res) => {
+  const { dog_id, requested_time, duration_minutes, location } = req.body;
+  const owner_id = req.session.user?.user_id;
+
+  if (!owner_id) {
+    return res.status(401).json({ error: 'Not logged in' });
   }
 
-  const ownerId = req.session.user.user_id;
-
   try {
-    const [rows] = await db.query(`
-      SELECT wr.request_id, d.name AS dog_name, d.size, wr.requested_time,
-             wr.duration_minutes, wr.location, wr.status, u.username AS owner_name
-      FROM WalkRequests wr
-      JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-      WHERE d.owner_id = ?
-      ORDER BY wr.requested_time DESC
-    `, [ownerId]);
+    const [result] = await db.query(`
+      INSERT INTO WalkRequests (dog_id, owner_id, requested_time, duration_minutes, location, status)
+      VALUES (?, ?, ?, ?, ?, 'open')
+    `, [dog_id, owner_id, requested_time, duration_minutes, location]);
 
-    res.json(rows);
-  } catch (err) {
-    console.error('Error fetching owner walk requests:', err);
-    res.status(500).json({ error: 'Failed to fetch walk requests' });
+    res.status(201).json({ message: 'Walk request created', request_id: result.insertId });
+  } catch (error) {
+    console.error('🔥 SQL 插入错误:', error);  // 关键日志
+    res.status(500).json({ error: 'Failed to create walk request' });
   }
 });
 
