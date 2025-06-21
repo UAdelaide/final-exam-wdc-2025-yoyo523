@@ -91,9 +91,9 @@ router.get('/', async (req, res) => {
     `, [ownerId]);
 
     res.json(rows);
-  } catch (error) {
-    console.error('SQL Error:', error);
-    res.status(500).json({ error: 'Failed to fetch walk requests' });
+  } catch (err) {
+    console.error('🔥 Error creating walk request:', err);
+    res.status(500).json({ error: 'Failed to create walk request' });
   }
 });
 
