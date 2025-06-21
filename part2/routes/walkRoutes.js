@@ -88,7 +88,7 @@ router.post('/:id/apply', async (req, res) => {
     res.status(500).json({ error: 'Failed to apply for walk' });
   }
 });
-router.get('/api/walks', async (req, res) => {
+router.get('/', async (req, res) => {
   if (!req.session.user || req.session.user.role !== 'owner') {
     return res.status(403).json({ error: 'Unauthorized' });
   }
