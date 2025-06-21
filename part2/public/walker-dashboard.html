@@ -48,9 +48,8 @@
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
-        const user = ref(null); // 当前登录用户
+        const user = ref(null);
 
-        // 获取当前登录用户信息（包括 walker_id）
         async function getCurrentUser() {
           try {
             const res = await fetch('/api/users/me');
@@ -61,7 +60,6 @@
           }
         }
 
-        // 加载所有可用 walk 请求
         async function loadWalkRequests() {
           try {
             const res = await fetch('/api/walks');
@@ -72,7 +70,6 @@
           }
         }
 
-        // 点击 Apply 按钮时触发
         async function applyToWalk(requestId) {
           try {
             if (!user.value) {
