@@ -85,15 +85,15 @@ router.get('/', async (req, res) => {
              wr.duration_minutes, wr.location, wr.status, u.username AS owner_name
       FROM WalkRequests wr
       JOIN Dogs d ON wr.dog_id = d.dog_id
-      JOIN Users u ON d.owner_id = u.user_id
-      WHERE d.owner_id = ?
+      JOIN Users u ON wr.owner_id = u.user_id
+      WHERE wr.owner_id = ?
       ORDER BY wr.requested_time DESC
     `, [ownerId]);
 
     res.json(rows);
   } catch (err) {
-    console.error('Error creating walk request:', err);
-    res.status(500).json({ error: 'Failed to create walk request' });
+    console.error('Error fetching walk requests:', err);
+    res.status(500).json({ error: 'Failed to fetch walk requests' });
   }
 });
 
