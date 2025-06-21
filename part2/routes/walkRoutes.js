@@ -94,6 +94,6 @@ router.post('/', async (req, res) => {
     console.error('Error loading walk requests:', err);
     res.status(500).json({ error: 'Failed to load walk requests' });
   }
-});
+});/app/
 
 module.exports = router;
