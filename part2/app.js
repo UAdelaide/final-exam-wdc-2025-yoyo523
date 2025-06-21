@@ -110,7 +110,6 @@ app.get('/api/mydogs', async (req, res) => {
         FROM Dogs
       `);
 
-      // 为每只狗加一张随机图
       const dogsWithPhotos = await Promise.all(rows.map(async (dog) => {
         try {
           const response = await axios.get('https://dog.ceo/api/breeds/image/random');
